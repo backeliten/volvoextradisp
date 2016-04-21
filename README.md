@@ -43,4 +43,8 @@ This sort functions will only look at 1 byte.
 To be able to grab two bytes, use sort16.sh, otherwise the same as sort.sh
 
 
+Added arduino code for Teensy with CAN shield:
+
+Just some example code, not nearly finished yet! Havent even tried it in the car yet.
+
 
