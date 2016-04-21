@@ -1,11 +1,10 @@
 # volvoextradisp
-Added extra display to my volvo for missing information
+Extra display to my volvo
 
-In my 2013 Volvo i miss some information in the original instrument cluster. Such as temperature of Engine.
+In my 2013 Volvo I do miss some information in the original instrument cluster. Such as temperature of Engine.
 Reading in VIDA in says that display will show me if the temperature is to high.
-So the value itself has to be on the CANbus, so start to digging into the cantrafic on the 
-midspeed network gave me some information.
-
+So the value itself has to be on the CANbus, so start to digging into the cantraffic on the 
+midspeed network gave me some information. I just hijacked the the CAN network behind the midcenter placed display. (It just have 4 wires, 12V, GND, CANL, CANH, so the "key on" or 15 Signal has to be on the network)
 
 This is just a very rough estimation. May not be correct.
 
@@ -16,7 +15,7 @@ ID 0x155, DL8, D2 - Status (bit 3 - Engine running)?
 ID 0x145, DL8, data d7 d8 - Speed 16bit unsigned. (Speed * 100) (Gets deci speed) (Backup Speed on D5 D6)
 
 ID 0x195 D5 D6, D7 D8
-0x145 Hastighet, 2 olika
+0x145 Speed, 2 different
 0x4C5	Bit 6, CLT
 
 Structure used to get data from canbus and convert to a real unit:
