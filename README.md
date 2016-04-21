@@ -19,6 +19,11 @@ ID 0x195 D5 D6, D7 D8
 0x4C5	Bit 6, CLT
 
 Structure used to get data from canbus and convert to a real unit:
-volvo_id_s  rpm {.adress=0x155, .data_offset=4, .data_length=2, .multiplier=1.0, .value_offset=0};    //Just raw value of RPM, same as the real RPM.
-volvo_id_s  speed {.adress=0x145, .data_offset=6, .data_length=2, .multiplier=0.1, .value_offset=0};  //There is two speed signals in same can frame, one from gearbox and the second from ABS system. Values in deci Km/h.
-volvo_id_s  clt {.adress=0x4C5, .data_offset=5, .data_length=1, .multiplier=1.5, .value_offset=60};  //Kind of rough values, precision of 1,5 degree. 
+volvo_id_s  rpm {.adress=0x155, .data_offset=4, .data_length=2, .multiplier=1.0, .value_offset=0};    
+//Just raw value of RPM, same as the real RPM.
+
+volvo_id_s  speed {.adress=0x145, .data_offset=6, .data_length=2, .multiplier=0.1, .value_offset=0};  
+//There is two speed signals in same can frame, one from gearbox and the second from ABS system. Values in deci Km/h.
+
+volvo_id_s  clt {.adress=0x4C5, .data_offset=5, .data_length=1, .multiplier=1.5, .value_offset=60};  
+//Kind of rough values, precision of 1,5 degree. 
