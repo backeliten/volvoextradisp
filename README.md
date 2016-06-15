@@ -16,7 +16,10 @@ ID 0x145, DL8, data d7 d8 - Speed 16bit unsigned. (Speed * 100) (Gets deci speed
 
 ID 0x195 D5 D6, D7 D8
 0x145 Speed, 2 different
-0x4C5	Bit 6, CLT
+
+0x4C5	Bit 6, CLT		- Coolant in C degrees, offset 60, so 80 is 20 degree C.
+
+ID 0x035 D1: On? 0x04 = Ignition ON 
 
 Structure used to get data from canbus and convert to a real unit:
 
@@ -46,5 +49,12 @@ To be able to grab two bytes, use sort16.sh, otherwise the same as sort.sh
 Added arduino code for Teensy with CAN shield:
 
 Just some example code, not nearly finished yet! Havent even tried it in the car yet.
+
+2016-06-15	-	 Update
+
+Now working code for temp reading.
+Code still rough but working. 
+Next step is to find Key ON signal, to be able to shut display down when car is not running.
+
 
 
