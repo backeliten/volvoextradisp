@@ -45,11 +45,13 @@ CAN_filter_t    filter, filter2, filter3, filter4;
 
 int16_t       tempvalue;
 uint8_t       KeyOn = 0;
+uint8_t       button_count = 0;
 
 #define NUMFLAKES 10
 #define XPOS 0
 #define YPOS 1
 #define DELTAY 2
+#define BUTTON_PIN        A6
 
 volvo_id_s  rpm {.adress=0x155, .data_offset=4, .data_length=2, .multiplier=1.0, .value_offset=0};
 volvo_id_s  speed {.adress=0x145, .data_offset=6, .data_length=2, .multiplier=1.0, .value_offset=0};
@@ -81,30 +83,9 @@ int16_t volvo_convert_data(volvo_id_s conv_s, CAN_message_t message_in, int16_t 
   return -1;
 }
 
-static const unsigned char PROGMEM logo16_glcd_bmp[] =
-{ B00000000, B11000000,
-  B00000001, B11000000,
-  B00000001, B11000000,
-  B00000011, B11100000,
-  B11110011, B11100000,
-  B11111110, B11111000,
-  B01111110, B11111111,
-  B00110011, B10011111,
-  B00011111, B11111100,
-  B00001101, B01110000,
-  B00011011, B10100000,
-  B00111111, B11100000,
-  B00111111, B11110000,
-  B01111100, B11110000,
-  B01110000, B01110000,
-  B00000000, B00110000 };
-
-//#if (SSD1306_LCDHEIGHT != 64)
-//#error("Height incorrect, please fix Adafruit_SSD1306.h!");
-//#endif
-
 void setup()   {                
   Serial.begin(1000000);
+    pinMode(BUTTON_PIN, INPUT);    //A6
 
  // filter.ext = 0;
  // filter.id = rpm.adress;
@@ -158,6 +139,17 @@ void loop() {
 
  // display.setCursor(0,20);
  // display.println(message_out.id);
+
+   if(digitalRead(BUTTON_PIN) == LOW)
+  {
+      button_count++;
+
+      if(button_count == 3)
+      {
+        button_count = 0;   //Clear button
+      }
+      delay(200);     //Bounce delay
+  }
  
   if(can.read(message_in))
   {
@@ -172,22 +164,18 @@ void loop() {
             KeyOn = 0;    //Key is off!
             
           }
-      } 
+      }
+  } 
       
-  //  display.setCursor(0,0);
-  //  display.print("ID:");
-  //  display.print(message_in.id);
-
-    //display.setCursor(40,0);
-    //display.print("Len:");
-    //display.print(message_in.len);
-
+  if(button_count == 0)
+  {
       if(volvo_convert_data(clt, message_in, &tempvalue) == 0)
       {
           if(KeyOn == 1)
           {
             display.clearDisplay();
             display.setCursor(0,0);
+            display.setTextSize(7);
             display.print(tempvalue);
             display.display();
           }
@@ -197,10 +185,46 @@ void loop() {
             display.display();
           }
        }
+  }
+  
+  if(button_count == 1)
+  {
+      if(volvo_convert_data(rpm, message_in, &tempvalue) == 0)
+      {
+          if(KeyOn == 1)
+          {
+            display.clearDisplay();
+            display.setCursor(0,0);
+             display.setTextSize(3);
+            display.print(tempvalue);
+            display.display();
+          }
+          else
+          {
+            display.clearDisplay();
+            display.display();
+          }
+       }
+  }
 
-       //display.print("D:");
-   // Serial.println(message_in.id);
-
+   if(button_count == 2)
+  {
+      if(volvo_convert_data(speed, message_in, &tempvalue) == 0)
+      {
+          if(KeyOn == 1)
+          {
+            display.clearDisplay();
+            display.setCursor(0,0);
+             display.setTextSize(4);
+            display.print(tempvalue);
+            display.display();
+          }
+          else
+          {
+            display.clearDisplay();
+            display.display();
+          }
+       }
   }
 
   delay(1);
