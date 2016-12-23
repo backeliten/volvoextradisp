@@ -47,6 +47,8 @@ int16_t       tempvalue;
 uint8_t       KeyOn = 0;
 uint8_t       button_count = 0;
 
+#define VERSION       "2.0"
+
 #define NUMFLAKES 10
 #define XPOS 0
 #define YPOS 1
@@ -118,10 +120,12 @@ void setup()   {
   display.setTextColor(WHITE);
   display.setCursor(0,0);
   display.println("Volvo ext.display..");
+  display.println(VERSION);
   display.display();
   delay(2000);
 
- display.setTextSize(7);
+ //display.setTextSize(7);
+  display.setTextSize(1);
  display.setTextColor(WHITE);
 
  Serial.println("Volvo Extended display startup....");
@@ -166,9 +170,14 @@ void loop() {
           }
       }
   } 
+
+  //display.setCursor(0,0);
+  //display.clearDisplay();
       
   if(button_count == 0)
   {
+    //display.println("CLT");
+    //display.display();
       if(volvo_convert_data(clt, message_in, &tempvalue) == 0)
       {
           if(KeyOn == 1)
@@ -189,6 +198,8 @@ void loop() {
   
   if(button_count == 1)
   {
+    //display.println("RPM");
+    //display.display();
       if(volvo_convert_data(rpm, message_in, &tempvalue) == 0)
       {
           if(KeyOn == 1)
@@ -209,6 +220,8 @@ void loop() {
 
    if(button_count == 2)
   {
+    //display.println("SPEED");
+   // display.display();
       if(volvo_convert_data(speed, message_in, &tempvalue) == 0)
       {
           if(KeyOn == 1)
