@@ -229,7 +229,8 @@ void loop() {
             display.clearDisplay();
             display.setCursor(0,0);
              display.setTextSize(4);
-            display.print(tempvalue);
+            //display.print(tempvalue);
+			display.print(tempvalue/100);		//Since we got the speed in millispeed, we need to divide by 100 to get real km/h.
             display.display();
           }
           else
