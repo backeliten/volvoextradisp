@@ -9,9 +9,13 @@ midspeed network gave me some information. I just hijacked the the CAN network b
 This is just a very rough estimation. May not be correct.
 
 ID 0x155, DL8, data d5 d6 - RPM 16bit unsigned.
+
 ID 0x155, DL8, D1 - Status (bit 3 - Ignition on?) 	
+
 ID 0x155, DL8, D2 - Status (bit 6 - Engine startup)?
+
 ID 0x155, DL8, D2 - Status (bit 3 - Engine running)?
+
 ID 0x145, DL8, data d7 d8 - Speed 16bit unsigned. (Speed * 100) (Gets deci speed) (Backup Speed on D5 D6)
 
 ID 0x195 D5 D6, D7 D8
