@@ -21,11 +21,14 @@ volvo_id_s  speed {.adress=0x145, .data_offset=6, .data_length=2, .multiplier=1.
 volvo_id_s  clt {.adress=0x4C5, .data_offset=5, .data_length=1, .multiplier=1.0, .value_offset=60};
 
 int16_t       tempvalue;
+int16_t       clt_temp;
+int16_t       rpm_temp;
+int16_t       spd_temp;
 uint8_t       KeyOn = 0;
 uint8_t       button_count = 0;
 
-#define VERSION       "2.3"
-#define BUTTON_PIN        A6
+#define VERSION       "2.4"
+#define BUTTON_PIN    A6
 
 
 int16_t  volvo_convert_data(volvo_id_s conv_s, CAN_message_t message_in, int16_t *value);  
@@ -103,7 +106,9 @@ void ExampleClass::gotFrame(CAN_message_t &frame, int mailbox)
           {
             display.clearDisplay();
             display.setCursor(0,0);
-            display.setTextSize(7);
+            display.setTextSize(2);
+            display.println("CLT");
+            display.setTextSize(5);
             display.print(tempvalue);
             display.display();
           }
@@ -125,7 +130,9 @@ void ExampleClass::gotFrame(CAN_message_t &frame, int mailbox)
           {
             display.clearDisplay();
             display.setCursor(0,0);
-             display.setTextSize(3);
+            display.setTextSize(2);
+            display.println("RPM");
+            display.setTextSize(3);
             display.print(tempvalue);
             display.display();
           }
@@ -147,7 +154,9 @@ void ExampleClass::gotFrame(CAN_message_t &frame, int mailbox)
           {
             display.clearDisplay();
             display.setCursor(0,0);
-             display.setTextSize(4);
+            display.setTextSize(2);
+            display.println("SPEED");
+             display.setTextSize(3);
             //display.print(tempvalue);
             display.print(tempvalue/100);   //Since we got the speed in millispeed, we need to divide by 100 to get real km/h.
             display.display();
@@ -158,6 +167,46 @@ void ExampleClass::gotFrame(CAN_message_t &frame, int mailbox)
             display.display();
           }
        }
+  }
+
+  if(button_count == 3)
+  {
+    //display.println("SPEED");
+   // display.display();
+      if(volvo_convert_data(speed, frame, &spd_temp) == 0)
+      {}
+      if(volvo_convert_data(clt, frame, &clt_temp) == 0)
+      {}
+      if(volvo_convert_data(rpm, frame, &rpm_temp) == 0)
+      {}
+        
+      if(KeyOn == 1)
+      {
+        display.clearDisplay();
+        display.setCursor(0,0);
+        
+        display.setTextSize(2);
+        display.println("CLT");
+        display.setTextSize(3);
+        display.println(clt_temp);
+
+        display.setTextSize(2);
+        display.println("RPM");
+        display.setTextSize(3);
+        display.println(rpm_temp);
+
+        display.setTextSize(2);
+        display.println("Speed");
+        display.setTextSize(3);
+        display.println(spd_temp);
+        
+        display.display();
+      }
+      else
+      {
+        display.clearDisplay();
+        display.display();
+      }
   }
 
     
@@ -221,7 +270,7 @@ void loop(void)
   {
       button_count++;
 
-      if(button_count == 3)
+      if(button_count == 4)
       {
         button_count = 0;   //Clear button
       }
